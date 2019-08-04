@@ -4,10 +4,10 @@ WORKDIR /app
 
 COPY . .
 
-ENV PORT=8501
+ENV PORT=3002
 
 RUN yarn install
 
 EXPOSE $PORT
 
-ENTRYPOINT ["yarn", "start"]
+ENTRYPOINT ["yarn", "dev"]
