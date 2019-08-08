@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crawler
+  labels:
+      app: crawler 
+      phase: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crawler
+  template:
+    metadata:
+      labels:
+        app: crawler
+        tier: backend
+        phase: test
+    spec:
+      containers:
+      - name: crawler-container
+        image: boomzero/night-watch:crawler
+        ports:
+        - containerPort: 3020
+        imagePullPolicy: Always
+        env:
+        - name: NODE_ENV
+          value: "development"
+        - name: PORT
+          value: "3020"
+        - name: MONGODB_URI
+          valueFrom:
+            secretKeyRef:
+              name: database
+              key: MONGODB_URI
+        - name: MONGODB_DB_NAME
+          value: "crawler-dev"
+        - name: NOTIFICATION_SERVICE_ADDRESS
+          value: "notification-service"
